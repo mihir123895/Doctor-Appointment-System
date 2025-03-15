@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+
+/* Styling for active navigation links */
+.active hr {
+    @apply block; /* Make hr visible */
+    height: 2px;
+    background-color: #5f6fff; /* Or use your custom primary color */
+    width: 100%;
+    margin: auto;
+  }
+  
+  *{
+    font-family: outfit;
+  }
+
+/* styles.css or index.css */
+.bg-primary-custom {
+    background-color: #5f6fff;
+  }
+
+  
+ ::-webkit-scrollbar {
+    @apply hidden
+ } 
+
+/* Custom Grid Layout */
+.grid-auto {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  @media (max-width:700px){
+    .active p {
+      @apply text-white bg-blue-700
+    }
+  }
