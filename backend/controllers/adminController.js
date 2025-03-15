@@ -32,6 +32,7 @@ const addDoctor = async (req, res) => {
         // Upload image to Cloudinary
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
         const imageUrl = imageUpload.secure_url;
+        
 
         const doctorsData = {
             name,
@@ -43,15 +44,14 @@ const addDoctor = async (req, res) => {
             experience,
             about,
             fees,
-            address: JSON.parse(address), // Ensure address is parsed if it's a JSON string
+            address:JSON.parse(address), 
             date: Date.now(),
         };
 
         const newDoctor = new doctorModel(doctorsData);
         await newDoctor.save();
 
-        res.json({ success: true, message: "Doctor added successfully" });
-
+       res.json({ success: true, message: "Doctor added successfully" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: error.message });
@@ -81,4 +81,5 @@ const loginAdmin = async (req,res) =>{
 }
 
 export { addDoctor,loginAdmin };
+
 
