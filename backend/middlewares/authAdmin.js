@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken"
 import 'dotenv/config';
 
-
-
 //admin authAdmin
 const authAdmin = async (req,res,next) =>{
     try {

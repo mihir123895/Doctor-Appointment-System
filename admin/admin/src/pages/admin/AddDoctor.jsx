@@ -44,7 +44,6 @@ const AddDoctor = () => {
 
            //console.log formdata
           //  formData.forEach((value,key)=>{
-
           //   // console.log(`${key}:${value}`)
           //  })
 
@@ -52,12 +51,22 @@ const AddDoctor = () => {
 
            if(data.success){
             toast.success(data.message)
+            setDocImg(false);
+            setName("");
+            setEmail("");
+            setPassword("");
+            setAddress1("")
+            setAddress2("");
+            setDegree('');
+            setAbout('');
+            setFees('');
            } else{
             toast.error(data.message)
            }
          
         } catch (error) {
-            
+          console.log(error)
+          toast.error(error)
         }
     }
    

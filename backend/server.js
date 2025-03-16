@@ -4,6 +4,8 @@ import 'dotenv/config';
 import connectDB from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import adminRouter from "./routes/adminRoute.js";
+import doctorRouter from "./routes/doctorRoute.js";
+import userRouter from "./routes/userRoute.js";
 
 // App config
 const app = express();
@@ -19,25 +21,17 @@ app.use(cors());
 
 // API endpoints
 app.use("/api/admin", adminRouter);
+app.use('/api/doctor',doctorRouter)
+app.use('/api/user',userRouter)
 
 // Root route
 app.get('/', (req, res) => {
     res.json({ success: true, message: "API is running!" });
 });
 
-// 404 Handler (for undefined routes)
-app.use((req, res) => {
-    res.status(404).json({ success: false, message: "Route not found" });
-});
 
-// General Error Handler
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ success: false, message: "Server Error" });
-});
-
-// Start server
 app.listen(port, () => {
     console.log(`Server Started on port ${port}`);
 });
 
+ 
