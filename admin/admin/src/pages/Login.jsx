@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { AdminContext } from "../context/AdminContext";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { DoctorContext } from "../context/DoctorContext";
 
 const Login = () => {
   const [state, setState] = useState("Admin");
@@ -9,7 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const { setAToken, backendUrl } = useContext(AdminContext);
-  console.log(backendUrl);
+  const {setDToken} = useContext(DoctorContext)
+ 
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -26,7 +28,18 @@ const Login = () => {
         } else {
           toast.error("invalide creadiantials");
         }
-      } else {
+      } else { 
+
+        const {data} = await axios.post(`${backendUrl}/api/doctor/login`,{email,password})
+
+        if(data.success){
+          localStorage.setItem('dToken',data.token)
+          setDToken(data.token)
+          console.log(data.token)
+        }else{
+          toast.error(data.message)
+        }
+        
 
       }
     } catch (error) {
@@ -60,7 +73,7 @@ const Login = () => {
             required
           />
         </div>
-        <button className="bg-blue-700 text-white w-full py-2 rounded-md text-base">
+        <button type="submit" className="bg-blue-700 text-white w-full py-2 rounded-md text-base">
           Login
         </button>
         {state === "Admin" ? (
