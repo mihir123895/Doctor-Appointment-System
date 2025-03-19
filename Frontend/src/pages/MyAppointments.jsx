@@ -26,7 +26,7 @@ const MyAppointments = () => {
 
       if(data.success){
         setAppointments(data.appointments.reverse())
-        console.log(data.appointments)
+        
       }
 
     } catch (error) {
@@ -38,7 +38,7 @@ const MyAppointments = () => {
   const cancelAppoitment = async (appointmentId)=>{
     try {
 
-      console.log(appointmentId)
+     
 
       const {data} = await axios.post(`${backendUrl}/api/user/cancel-appointment`,{appointmentId},{headers:{token}})
 
@@ -101,7 +101,7 @@ const MyAppointments = () => {
     try {
       const {data} = await axios.post(`${backendUrl}/api/user/payment-razorpay`,{appointmentId},{headers:{token}})
       if(data.success){
-        console.log(data.order);
+      
         initPay(data.order)
       }
       
@@ -138,10 +138,11 @@ const MyAppointments = () => {
               </div>
               <div></div>
               <div className='flex flex-col gap-2 justify-end'>
-               {!item.cancelled && item.payment && <button className='sm:min-w-48 py-2 border rounded text-stone-500 bg-indigo-50'>Paid</button>}
-               {!item.cancelled && !item.payment && <button onClick={()=>appointmentRazorpay(item._id)} className='text-xs text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-blue-700 hover:text-white transition-all duration-300 '>Pay Online</button> } 
-               {!item.cancelled && <button onClick={()=>cancelAppoitment(item._id)} className='text-xs text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button> } 
-               {item.cancelled && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
+               {!item.cancelled && item.payment && !item.isCompleted && <button className='sm:min-w-48 py-2 border rounded text-stone-500 bg-indigo-50'>Paid</button>}
+               {!item.cancelled && !item.payment &&  !item.isCompleted && <button onClick={()=>appointmentRazorpay(item._id)} className='text-xs text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-blue-700 hover:text-white transition-all duration-300 '>Pay Online</button> } 
+               {!item.cancelled && !item.isCompleted && <button onClick={()=>cancelAppoitment(item._id)} className='text-xs text-stone-500 text-center sm:min-w-48 py-2 border hover:bg-red-600 hover:text-white transition-all duration-300'>Cancel appointment</button> } 
+               {item.cancelled &&  !item.isCompleted && <button className='sm:min-w-48 py-2 border border-red-500 rounded text-red-500'>Appointment cancelled</button>}
+              {item.isCompleted && <button className='sm:min-w-48 py-2 border border-green-500 rounded text-green-500'>Completed</button> }
               </div>
             </div>
           ))

@@ -58,25 +58,23 @@ const Appoinment = () => {
       while (currentDate < endTime) {
         let formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   
-        let day = currentDate.getDate()
-      let month = currentDate.getMonth()+1
-      let year = currentDate.getFullYear()
-
-      const slotDate = day+"_"+month+"_"+year
-      const slotTime = formattedTime
-
-      const isSlotAvailable = docInfo.slots_booked[slotDate] && docInfo.slots_booked[slotDate].includes(slotTime) ? false : true
-
-
-      if(isSlotAvailable){
+        let day = currentDate.getDate();
+        let month = currentDate.getMonth() + 1;
+        let year = currentDate.getFullYear();
+  
+        const slotDate = day + "_" + month + "_" + year;
+        const slotTime = formattedTime;
+  
+        // Ensure docInfo and docInfo.slots_booked are defined before accessing
+        const isSlotAvailable = !docInfo?.slots_booked?.[slotDate] || !docInfo.slots_booked[slotDate].includes(slotTime);
+  
+        if (isSlotAvailable) {
           // Add slot to array
           timeSlots.push({
             datetime: new Date(currentDate),
             time: formattedTime,
           });
-      }
-
-      
+        }
   
         // Increment current time by 30 minutes
         currentDate.setMinutes(currentDate.getMinutes() + 30);
@@ -85,41 +83,49 @@ const Appoinment = () => {
       // Add the slots for this day to the main slots array
       setDocSlots((prev) => [...prev, timeSlots]); // We need to append this day's slots
     }
-  };
+};
 
 
-  const bookAppointment = async () =>{
-    if(!token){
-      toast.warn("Login to book appointment")
-      return navigate('/login')
-    }
-
-    try {
-
-      const date = docSlots[slotIndex][0].datetime
-
-      let day = date.getDate()
-      let month = date.getMonth()+1
-      let year = date.getFullYear()
-
-      const slotDate = day+"_"+month+"_"+year
-
-      const {data} = await axios.post(`${backendUrl}/api/user/book-appointment`,{docId,slotDate,slotTime},{headers:{token}})
-      if(data.success){
-        toast.success(data.message)
-        getDoctorsData()
-        navigate('/my-appointments')
-      } else{
-
-        toast.error(data.message)
-
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error(error.message)
-    }
+ const bookAppointment = async () => {
+  if (!token) {
+    toast.warn("Login to book appointment");
+    return navigate('/login');
   }
-  
+
+  try {
+    const date = docSlots[slotIndex][0].datetime; // Getting the selected date
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1; // Months are zero-indexed
+    let year = date.getFullYear();
+
+    // Construct the date in "day_month_year" format
+    const slotDate = day + "_" + month + "_" + year;
+
+    // You were missing the slotTime value here; it's part of your slot object
+    const slotTime = docSlots[slotIndex][0].time; // Assuming 'time' is part of your slot object
+
+    // Now we make the API request
+    const { data } = await axios.post(
+      `${backendUrl}/api/user/book-appointment`,
+      { docId, slotDate, slotTime },
+      { headers: { token } }
+    );
+
+    // Handling the response from the server
+    if (data.success) {
+      toast.success(data.message);
+      getDoctorsData(); // Refresh the doctor data
+      navigate('/my-appointments'); // Redirect to the appointments page
+    } else {
+      toast.error(data.message); // Show error message from API if appointment fails
+    }
+  } catch (error) {
+    console.log(error);
+    toast.error(error.message || "An error occurred while booking the appointment.");
+  }
+};
+
 
   useEffect(() => {
     fetchDocInfo();
