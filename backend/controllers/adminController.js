@@ -74,7 +74,7 @@ const loginAdmin = async (req,res) =>{
             return res.status(400).json({ success: false, message: "Invalid email or password"})
         }
 
-        
+       
     } catch (error) {
         console.log(error)
         res.json({success:false,message:error.message})

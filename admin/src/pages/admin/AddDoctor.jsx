@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const AddDoctor = () => {
+  const {backendUrl,aToken} = useContext(AdminContext)
+  console.log(backendUrl)
 
     const [docImg,setDocImg] = useState(false)
     const [name,setName]=useState("") 
@@ -18,7 +20,8 @@ const AddDoctor = () => {
     const [address1,setAddress1]=useState("") 
     const [address2,setAddress2]=useState("") 
 
-    const {backendUrl,aToken} = useContext(AdminContext)
+   
+
 
     const onSubmitHandler = async (event) =>{
         event.preventDefault()
@@ -47,6 +50,7 @@ const AddDoctor = () => {
           //   // console.log(`${key}:${value}`)
           //  })
 
+      
            const {data} = await axios.post(`${backendUrl}/api/admin/add-doctor`,formData,{headers:{aToken}})
 
            if(data.success){
