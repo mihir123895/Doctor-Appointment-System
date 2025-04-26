@@ -1,12 +1,15 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import './reset.css'
-import { AdminContext } from '../context/AdminContext';
 import { toast } from 'react-toastify';
+import { AppContext } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const Resetpassword = () => {
 
-  const {backendUrl} = useContext(AdminContext)
+  const navigate = useNavigate()
+
+  const {backendUrl} = useContext(AppContext)
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
@@ -15,7 +18,8 @@ const Resetpassword = () => {
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(backendUrl + '/api/v1/auth/send-reset-otp', { email });
+      const res =await axios.post(`${backendUrl}/api/user/send-reset-otp`, { email });
+
       res.data.success ? toast.success(res.data.message) : toast.error(res.data.message);
       setStep(2);
     } catch (err) {
@@ -25,7 +29,7 @@ const Resetpassword = () => {
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(backendUrl + '/api/v1/auth/reset-password', {
+      const res = await axios.post(`${backendUrl}/api/user/reset-password`, {
         email,
         otp,
         newPassword: password, // Assuming you already have a `password` state
@@ -37,7 +41,10 @@ const Resetpassword = () => {
         setEmail('');
         setOtp('');
         setPassword('');
+        navigate('/login')
       }
+
+
     } catch (err) {
       toast.error(err.response?.data?.message || 'Invalid OTP or Password');
     }
@@ -89,4 +96,4 @@ const Resetpassword = () => {
   );
 };
 
-export default Resetpassword
+export default Resetpassword;

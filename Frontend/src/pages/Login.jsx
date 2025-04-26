@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/AppContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {toast} from "react-toastify"
 
@@ -74,7 +74,7 @@ const Login = () => {
       </div>
       <button type='submit' className='bg-primary-custom text-white w-full py-2 rounded-md text-base'>{state === 'Sign UP' ? "Create Account" : "Login"}</button>
       {
-        state === 'Sign Up' ? <p>Already have an account?  <span className='text-blue-700 underline cursor-pointer' onClick={()=>setState('Login')}>Login here</span> </p> : <p>Create an new account? <span className='text-blue-700 underline cursor-pointer' onClick={()=>setState('Sign Up')}>click here</span> </p>
+        state === 'Sign Up' ? <p>Already have an account?  <span className='text-blue-700 underline cursor-pointer' onClick={()=>setState('Login')}>Login here</span> </p> : <p>Create an new account? <span className='text-blue-700 underline cursor-pointer' onClick={()=>setState('Sign Up')}>click here</span> <br /> <Link className='text-blue-700 underline items-center justify-center cursor-pointer' to={'/resetpassword'} >Forgot Password</Link> </p>
       }
     </div>
     </form>

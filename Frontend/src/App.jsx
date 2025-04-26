@@ -11,6 +11,7 @@ import MyProfile from './pages/MyProfile';
 import Appoinment from './pages/Appoinment';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Resetpassword from './pages/Resetpassword';
 import 'react-toastify/dist/ReactToastify.css'
 
 
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/my-profile' element={<MyProfile />}/>
         <Route path='/my-appointments' element={<MyAppointments/>}/>
         <Route path='/appointment/:docId'  element={<Appoinment />}/>
+        <Route path='/resetpassword' element={<Resetpassword />} />
        </Routes>
 <Footer /> 
 
